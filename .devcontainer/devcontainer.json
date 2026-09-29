@@ -1,16 +1,24 @@
 {
-    "name": "Windows 11 on Codespace",
-    "build": {
-        "dockerfile": "Dockerfile"
+  "name": "Windows 11 Codespace",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {
+      "version": "latest",
+      "dockerDashComposeVersion": "latest"
+    }
+  },
+  "forwardPorts": [
+    8006,
+    3389
+  ],
+  "portsAttributes": {
+    "8006": {
+      "label": "Windows 11 noVNC",
+      "onAutoForward": "openBrowser"
     },
-    "forwardPorts": [
-        8006
-    ],
-    "portsAttributes": {
-        "8006": {
-            "label": "Windows 11 (noVNC)",
-            "onAutoForward": "openBrowser"
-        }
-    },
-    "postStartCommand": "echo '✅ Codespace ready! Run: start-windows.sh to launch Windows 11 VM'"
+    "3389": {
+      "label": "Windows RDP",
+      "onAutoForward": "notify"
+    }
+  },
+  "postStartCommand": "echo 'Windows 11 Codespace ready'"
 }
