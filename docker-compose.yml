@@ -1,32 +1,28 @@
-version: "3.8"
+{
+  "name": "Windows 11 Codespace",
 
-services:
-  windows:
-    image: dockurr/windows
-    container_name: windows11
-    environment:
-      VERSION: "win11"       # Windows 11
-      RAM_SIZE: "8G"         # RAM allocated to the VM
-      CPU_CORES: "4"         # CPU cores for the VM
-      DISK_SIZE: "32G"       # Virtual disk size
-    devices:
-      - /dev/kvm             # KVM acceleration (available in Codespaces)
-    cap_add:
-      - NET_ADMIN            # Required for networking
-    ports:
-      - "8006:8006"          # noVNC web interface
-      - "3389:3389"          # RDP (optional)
-    volumes:
-      - windows_data:/storage  # Persistent storage for the VM
-    stop_grace_period: 2m
-    restart: on-failure
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:4": {
+      "version": "latest",
+      "dockerDashComposeVersion": "latest"
+    }
+  },
 
-  devcontainer:
-    image: mcr.microsoft.com/devcontainers/base:ubuntu
-    volumes:
-      - ..:/workspace:cached
-    command: sleep infinity
-    network_mode: service:windows
+  "forwardPorts": [
+    8006,
+    3389
+  ],
 
-volumes:
-  windows_data:
+  "portsAttributes": {
+    "8006": {
+      "label": "Windows 11 noVNC",
+      "onAutoForward": "openBrowser"
+    },
+    "3389": {
+      "label": "Windows RDP",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "postStartCommand": "echo 'Windows 11 Codespace ready'"
+}
